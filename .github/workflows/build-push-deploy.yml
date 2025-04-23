@@ -18,14 +18,14 @@ jobs:
     - name: Checkout frontend
       uses: actions/checkout@v4
       with:
-        repository: takeNotes-app/notes-frontend
-        path: ./notes-frontend
+        repository: takeNotes-app/notes-app
+        path: ./notes-app
 
     - name: Checkout backend
       uses: actions/checkout@v4
       with:
-        repository: takeNotes-app/notes-backend
-        path: ./notes-backend
+        repository: takeNotes-app/notes-app-backend
+        path: ./notes-app-backend
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -58,7 +58,7 @@ jobs:
     - name: Build and push frontend image
       uses: docker/build-push-action@v4
       with:
-        context: ./notes-frontend
+        context: ./notes-app
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
@@ -68,7 +68,7 @@ jobs:
     - name: Build and push backend image
       uses: docker/build-push-action@v4
       with:
-        context: ./notes-backend
+        context: ./notes-app-backend
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
