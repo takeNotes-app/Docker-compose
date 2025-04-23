@@ -57,7 +57,7 @@ services:
     restart: always
     environment:
       - PORT=5000
-      - MONGODB_URI=mongodb://mongo:27017/notesapp
+      - MONGODB_URI=mongodb://admin:Supdevinci2025!@mongodb:27017/mydb?authSource=admin
       - NODE_ENV=development
     depends_on:
       - mongo
@@ -76,6 +76,9 @@ services:
     restart: always
     volumes:
       - mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=Supdevinci2025!
     networks:
       - notes-network
 
