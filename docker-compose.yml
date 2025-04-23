@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v3.3
+    container_name: traefik
+    command:
+      - "--api.dashboard=true"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.dashboard.address=:8080"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=true"
+      - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
+      - "--certificatesresolvers.myresolver.acme.caServer=https://acme-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=infogerance@eenov.com"
+      - "--accesslog=true"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`notes.minesword.fr`) && (PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$05$$TDD5B5SM4kScOH1GFfR96OhbfADy2nSTMN6arVnUVqCuYCOTHLA.i"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "./acme:/acme"
+    restart: always
+    networks:
+      - notes-network
+  frontend:
+    image: ghcr.io/takenotes-app/notes-frontend:latest
+    container_name: notes-frontend
+    depends_on:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`notes.minesword.fr`) && PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend.entrypoints=web,websecure"
+      - "traefik.http.routers.frontend.tls=true"
+    networks:
+      - notes-network
+
+  backend:
+    image: ghcr.io/takenotes-app/notes-backend:latest
+    container_name: notes-backend
+    restart: always
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongo:27017/notesapp
+      - NODE_ENV=development
+    depends_on:
+      - mongo
+    networks:
+      - notes-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`notes.minesword.fr`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"
+
+  mongo:
+    image: mongo:latest
+    container_name: notes-mongo
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - notes-network
+
+networks:
+  notes-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+
