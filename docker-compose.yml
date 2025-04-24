@@ -58,7 +58,7 @@ services:
     restart: always
     environment:
       - PORT=5000
-      - MONGODB_URI=mongodb://admin:Supdevinci2025!@notes-mongo:27017/mydb?authSource=admin
+      - MONGODB_URI=mongodb://admin:Supdevinci2025!@notes-mongo:27017/admin?authSource=admin
       - NODE_ENV=development
     depends_on:
       - mongo
