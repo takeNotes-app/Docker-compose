@@ -66,7 +66,7 @@ services:
       - notes-network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`notes.minesword.fr`) && PathPrefix(`/notes/api`)"
+      - "traefik.http.routers.backend.rule=Host(`notes.minesword.fr`) && PathPrefix(`/api`)"
       - "traefik.http.routers.backend.priority=2"
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls.certresolver=myresolver"
