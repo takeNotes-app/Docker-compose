@@ -119,9 +119,9 @@ jobs:
         sarif_file: trivy-results-backend.sarif
         category: backend
 
-    - name: Run Dockle scan for frontend
+    - name: Run Dockle scan for backend
       run: |
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock goodwithtech/dockle:latest ghcr.io/takenotes-app/notes-frontend:latest || exit 1
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock goodwithtech/dockle:latest ghcr.io/takenotes-app/notes-backend:latest || exit 1
 
     - name: Push backend image
       run: docker push ghcr.io/takenotes-app/notes-backend:latest
