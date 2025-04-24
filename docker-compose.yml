@@ -20,11 +20,13 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`notes.minesword.fr`) && (PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.backend.priority=3"
       - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.entrypoints=dashboard"
       - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
-      - "traefik.http.routers.dashboard.middlewares=auth"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$05$$TDD5B5SM4kScOH1GFfR96OhbfADy2nSTMN6arVnUVqCuYCOTHLA.i"
+      - "traefik.http.middlewares.dashboard-strip.stripprefix.prefixes=/dashboard"
+      - "traefik.http.routers.dashboard.middlewares=auth,dashboard-strip"
     ports:
       - "80:80"
       - "443:443"
