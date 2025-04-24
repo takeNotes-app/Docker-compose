@@ -108,7 +108,7 @@ jobs:
       uses: github/codeql-action/upload-sarif@v3
       with:
         sarif_file: trivy-results-backend.sarif
-        category: frontend
+        category: backend
 
     - name: Push backend image
       run: docker push ghcr.io/takenotes-app/notes-backend:latest
