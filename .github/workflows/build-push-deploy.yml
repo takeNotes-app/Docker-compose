@@ -100,6 +100,8 @@ jobs:
             # Use sudo for Docker commands
             sudo docker pull ghcr.io/takenotes-app/notes-frontend:latest
             
+            rsync -avz -e "./docker-compose.yml ${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}:/home/ubuntu/"
+            
             echo 'Deploying with Docker Compose...'
             cd /home/${{ secrets.SSH_USER }}
             # Use sudo for docker-compose commands
