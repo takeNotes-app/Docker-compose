@@ -24,7 +24,6 @@ services:
       - "traefik.http.routers.dashboard.priority=3"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.services.frontend.loadbalancer.server.port=44380"
       - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$05$$TDD5B5SM4kScOH1GFfR96OhbfADy2nSTMN6arVnUVqCuYCOTHLA.i"
       - "traefik.http.routers.dashboard.middlewares=auth"
