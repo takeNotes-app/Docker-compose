@@ -80,6 +80,11 @@ jobs:
     needs: build-and-push
     
     steps:
+      - name: Checkout docker-compose files
+        uses: actions/checkout@v4
+        with:
+          path: ./docker-compose-files
+
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.8.0
         with:
@@ -95,12 +100,15 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
+          # Copy docker-compose file to server
+          rsync -avz ./docker-compose-files/docker-compose.yml ${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}:/home/${{secrets.SSH_USER}}/
+          
+          # SSH to server and deploy
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             echo 'Pulling latest images from GHCR...'
             # Use sudo for Docker commands
             sudo docker pull ghcr.io/takenotes-app/notes-frontend:latest
-            
-            rsync -avz -e "./docker-compose.yml ${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}:/home/ubuntu/"
+            sudo docker pull ghcr.io/takenotes-app/notes-backend:latest
             
             echo 'Deploying with Docker Compose...'
             cd /home/${{ secrets.SSH_USER }}
