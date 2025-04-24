@@ -20,7 +20,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`notes.minesword.fr`) && (PathPrefix(`/dashboard`))"
-      - "traefik.http.routers.backend.priority=3"
+      - "traefik.http.routers.dashboard.priority=3"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.entrypoints=dashboard"
       - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
