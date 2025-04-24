@@ -74,6 +74,9 @@ jobs:
         ignore-unfixed: true
         vuln-type: os,library
         severity: CRITICAL,HIGH
+    - name: Inject automationDetails into SARIF (frontend)
+      run: |
+         jq '.runs[].automationDetails = { id: "trivy-frontend" }' trivy-results-frontend.sarif > trivy-frontend-labeled.sarif
 
     - name: Upload frontend SARIF to GitHub
       uses: github/codeql-action/upload-sarif@v3
@@ -103,6 +106,9 @@ jobs:
         ignore-unfixed: true
         vuln-type: os,library
         severity: CRITICAL,HIGH
+    - name: Inject automationDetails into SARIF (backend)
+      run: |
+         jq '.runs[].automationDetails = { id: "trivy-backend" }' trivy-results-backend.sarif > trivy-backend-labeled.sarif
 
     - name: Upload backend SARIF to GitHub
       uses: github/codeql-action/upload-sarif@v3
