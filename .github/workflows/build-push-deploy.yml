@@ -113,6 +113,7 @@ jobs:
             echo 'Deploying with Docker Compose...'
             cd /home/${{ secrets.SSH_USER }}
             # Use sudo for docker-compose commands
+            export MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }}
             sudo -E docker compose pull
             sudo -E docker compose up -d --force-recreate
             
