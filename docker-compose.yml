@@ -25,8 +25,7 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=dashboard"
       - "traefik.http.routers.dashboard.tls.certresolver=myresolver"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$05$$TDD5B5SM4kScOH1GFfR96OhbfADy2nSTMN6arVnUVqCuYCOTHLA.i"
-      - "traefik.http.middlewares.dashboard-strip.stripprefix.prefixes=/dashboard"
-      - "traefik.http.routers.dashboard.middlewares=auth,dashboard-strip"
+      - "traefik.http.routers.dashboard.middlewares=auth"
     ports:
       - "80:80"
       - "443:443"
