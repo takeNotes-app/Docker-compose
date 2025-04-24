@@ -58,7 +58,7 @@ services:
     restart: always
     environment:
       - PORT=5000
-      - MONGODB_URI=mongodb://admin:${{ secrets.MONGO_PASSWORD }}@notes-mongo:27017/admin?authSource=admin
+      - MONGODB_URI=mongodb://admin:$MONGO_PASSWORD@notes-mongo:27017/admin?authSource=admin
       - NODE_ENV=development
     depends_on:
       - mongo
@@ -80,7 +80,7 @@ services:
       - mongo-data:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_PASSWORD }}
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
     networks:
       - notes-network
 
