@@ -9,6 +9,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.dashboard.address=:44380"
+      - "--entrypoints.dashboard.http.tls=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=true"
       - "--certificatesresolvers.myresolver.acme.storage=/acme/acme.json"
