@@ -18,13 +18,13 @@ jobs:
     - name: Checkout frontend
       uses: actions/checkout@v4
       with:
-        repository: takeNotes-app/notes-app
+        repository: takenotes-app/notes-app
         path: ./notes-app
 
     - name: Checkout backend
       uses: actions/checkout@v4
       with:
-        repository: takeNotes-app/notes-app-backend
+        repository: takenotes-app/notes-app-backend
         path: ./notes-app-backend
 
     - name: Set up Docker Buildx
@@ -41,7 +41,7 @@ jobs:
       id: meta-frontend
       uses: docker/metadata-action@v4
       with:
-        images: ghcr.io/takeNotes-app/notes-frontend
+        images: ghcr.io/takenotes-app/notes-frontend
         tags: |
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
           type=sha,format=short
@@ -50,7 +50,7 @@ jobs:
       id: meta-backend
       uses: docker/metadata-action@v4
       with:
-        images: ghcr.io/takeNotes-app/notes-backend
+        images: ghcr.io/takenotes-app/notes-backend
         tags: |
           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
           type=sha,format=short
