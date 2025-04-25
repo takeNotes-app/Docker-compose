@@ -86,6 +86,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
     networks:
       - notes-network
+    labels:
+      - "traefik.enable=false"
     healthcheck:
       test: [
         "CMD-SHELL",
