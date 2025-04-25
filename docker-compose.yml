@@ -37,6 +37,7 @@ services:
     restart: always
     networks:
       - notes-network
+
   frontend:
     image: ghcr.io/takenotes-app/notes-frontend:latest
     container_name: notes-frontend
@@ -62,7 +63,8 @@ services:
       - MONGODB_URI=mongodb://admin:$MONGO_PASSWORD@notes-mongo:27017/admin?authSource=admin
       - NODE_ENV=development
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     networks:
       - notes-network
     labels:
@@ -84,6 +86,15 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
     networks:
       - notes-network
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "mongosh --username admin --password \"$MONGO_PASSWORD\" --authenticationDatabase admin --eval 'db.adminCommand(\"ping\")'"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
 networks:
   notes-network:
@@ -92,4 +103,3 @@ networks:
 volumes:
   mongo-data:
     driver: local
-
