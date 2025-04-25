@@ -155,6 +155,7 @@ jobs:
         rsync -avz ./docker-compose-files/docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/
 
         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+          echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u Nedjii --password-stdin
           echo 'Pulling latest images from GHCR...'
           sudo docker pull ghcr.io/takenotes-app/notes-frontend:latest
           sudo docker pull ghcr.io/takenotes-app/notes-backend:latest
